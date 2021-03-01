@@ -67,9 +67,9 @@ class MovieLensDatasetHelper():
         return all_samples
 
 class MovieLens100KWithGenresDataset(Dataset):
-    def __init__(self, udata_file, genres_data_file, split='train', neg_per_pos=4):
+    def __init__(self, udata_file, genres_data_file, split='train', neg_per_pos=4, tf_idf=False):
         self.data = MovieLens100KImplicitDataset(udata_file, split='train', neg_per_pos=neg_per_pos)
-        self.genres_dataset = MovieLens100KGenresDataset(genres_data_file)
+        self.genres_dataset = MovieLens100KGenresDataset(genres_data_file, tf_idf=tf_idf)
 
     def __len__(self):
         return len(self.data)
@@ -89,10 +89,19 @@ class MovieLens100KGenresDataset(Dataset):
               'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi',
               'Thriller', 'War', 'Western']
     NUM_GENRES = len(GENRES)
-    def __init__(self, genres_file):
+    def __init__(self, genres_file, tf_idf=False):
         # load data into pandas DataFrame from genre file
         data = np.loadtxt(genres_file, delimiter='|', encoding='latin-1', dtype=str)
         genres = data[:, -self.NUM_GENRES:].astype(float)
+        
+        # convert to TV-IDF if specified
+        if tf_idf:
+            N = genres.shape[0]
+            TF_ij = genres # no normalization needed, as genres is binary vector (does not count per-doc frequency)
+            IDF_i = np.log(N/genres.sum(axis=0))
+            TF_IDF = TF_ij*np.expand_dims(IDF_i, 0)
+            genres = TF_IDF
+
         self.genres_df = pd.DataFrame(data=genres, columns=self.GENRES)
 
     def __len__(self):

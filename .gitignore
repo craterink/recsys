@@ -3,3 +3,4 @@ wandb
 raw_*
 __pycache__
 lightning_logs
+checkpoints

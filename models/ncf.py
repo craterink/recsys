@@ -1,8 +1,6 @@
 import pytorch_lightning as pl
 import torch
 
-from movie_lens_data import MovieLensDatasetHelper
-
 class NeuralCollaborativeFilter(pl.LightningModule):
     def __init__(self, num_users, num_items, num_genres, user_idx_lookup, item_idx_lookup, user_embedding_size=8, item_embedding_size=8):
         super().__init__()
