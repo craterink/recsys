@@ -13,7 +13,7 @@ The models I have worked with so far include:
 ## Running this Code
 To run the code, you must have several dependencies installed, including PyTorch and PyTorch Lightning: `pip install -r requirements.txt`. You must also download the MovieLens 100K dataset, possibly from [here](https://www.kaggle.com/prajitdatta/movielens-100k-dataset).
 
-Run a given model using its prefix in the Models dict: e.g., `python main_recsys100k.py path/to/u.data path/to/u.item --model_type ncf-g [kwargs]`. Models:
+Run a given model using its prefix in the Models dict: e.g., `python main_recsys100k.py path/to/u.data path/to/u.item --model_type ncf-g [kwargs]`. (If you have a Weights and Biases account and you've configured it locally, you can specify a `wandb` project name using `--wandb_name NAME`.) Models:
 ```
 Models = {
         'ncf' : (NeuralCollaborativeFilter, {

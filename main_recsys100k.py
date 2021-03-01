@@ -12,14 +12,15 @@ from movielens_100k_data import *
 from recsys_ncf_models import *
 from models_content import *
 
-def main(udata_file, genres_file, batch_size=100, neg_per_pos=4, name='run', emb_size=8, model_type='ncf'):
+def main(udata_file, genres_file, batch_size=100, neg_per_pos=4, wandb_name='', emb_size=8, model_type='ncf'):
     # init WANDB
-    run = wandb.init(project="recsys", reinit=True)
-    args = locals()
-    del args[udata_file]
-    del args[genres_file]
-    run.name = str(args)
-    wandb_logger = WandbLogger()
+    if wandb_name:
+        run = wandb.init(project=wandb_name, reinit=True)
+        args = locals()
+        del args[udata_file]
+        del args[genres_file]
+        run.name = str(args)
+        wandb_logger = WandbLogger()
 
     # init DATA
     dl_kwargs = {
